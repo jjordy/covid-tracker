@@ -1,0 +1,74 @@
+{
+  "name": "nextjs-app",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A nextjs app setup by jordy",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "lint": "prettier -c **/*.{js,ts,tsx}",
+    "lint:fix": "prettier --write **/*.{js,ts,tsx}",
+    "start": "next start",
+    "test": "jest",
+    "test:all": "jest && cypress run",
+    "test:ci": "jest --ci",
+    "test:dev": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run test && yarn run lint:fix"
+    }
+  },
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "tailwindcss",
+    "jest",
+    "testing-library/react"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@sentry/browser": "^5.9.1",
+    "@sentry/node": "^5.12.3",
+    "@zeit/next-source-maps": "^0.0.3",
+    "d3": "^5.15.1",
+    "date-fns": "^2.11.1",
+    "dotenv": "^8.2.0",
+    "lodash.get": "^4.4.2",
+    "lodash.uniqby": "^4.7.0",
+    "next": "^9.1.3",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-icons": "^3.9.0",
+    "swr": "^0.2.0",
+    "tailwindcss": "^1.2.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0"
+  },
+  "devDependencies": {
+    "@cypress/webpack-preprocessor": "^4.1.3",
+    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/react": "^10.0.1",
+    "@testing-library/react-hooks": "^3.2.1",
+    "@types/d3": "^5.7.2",
+    "@types/node": "^13.7.0",
+    "@types/react": "^16.9.11",
+    "autoprefixer": "^9.7.4",
+    "babel-jest": "^25.1.0",
+    "cypress": "^4.1.0",
+    "husky": "^4.2.3",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^25.1.0",
+    "jest-next-dynamic": "^1.0.1",
+    "postcss-import": "^12.0.1",
+    "prettier": "^2.0.1",
+    "react-test-renderer": "^16.12.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2"
+  }
+}

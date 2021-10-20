@@ -1,7 +1,7 @@
 import { FaPlay, FaPause, FaStop } from "react-icons/fa";
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
-import { HiChevronDoubleDown, HiOutlineChevronDown } from "react-icons/hi";
+import { HiChevronDoubleDown, HiChevronDown, HiOutlineChevronDown } from "react-icons/hi";
 import LegendItem from "./LegendItem";
 
 export default function Legend({
@@ -63,7 +63,7 @@ export default function Legend({
             <option value="death">Deaths</option>
           </select>
           <div className="absolute right-4 top-4 text-gray-600">
-            <HiChevronDoubleDown />
+            <HiChevronDown />
           </div>
         </div>
         <p className="my-2 text-gray-600 text-sm font-medium">Hit the play button or drag the slider to watch the cases by date and state.</p>

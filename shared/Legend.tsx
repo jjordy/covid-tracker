@@ -13,6 +13,8 @@ export default function Legend({
   range,
   setPlay,
   currentDate,
+  stepSize,
+  setStepSize,
 }) {
   const [show, setShow] = useState(false);
   const toggle = () => setShow(!show);
@@ -66,7 +68,9 @@ export default function Legend({
             <HiChevronDown />
           </div>
         </div>
-        <p className="my-2 text-gray-600 text-sm font-medium">Hit the play button or drag the slider to watch the cases by date and state.</p>
+        <p className="my-2 text-gray-600 text-sm font-medium">
+          Hit the play button or drag the slider to watch the cases by date and state.
+        </p>
         <div className="flex py-2">
           <button
             className={`rounded p-2 mr-2 text-white ${play ? "bg-gray-500" : "bg-green-500"}`}
@@ -103,6 +107,18 @@ export default function Legend({
             onChange={handleChangeRange}
             value={currentRangePos}
           />
+          <select
+            className="appearance-none bg-blue-900/10 p-1 mx-1 text-sm font-medium text-gray-700"
+            onChange={(evt) => {
+              console.log(evt.target.value);
+              setStepSize(parseInt(evt.target.value));
+            }}
+            value={stepSize}
+          >
+            <option value={3}>3 Days</option>
+            <option value={7}>1 Week</option>
+            <option value={30}>1 Month</option>
+          </select>
         </div>
       </div>
     </>

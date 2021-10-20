@@ -11,16 +11,20 @@ export default function useMap() {
   const { data: daily } = useSWR(`https://data.cdc.gov/resource/9mfq-cb36.json`);
   const [range, setRange] = useState(0);
   const [currentRangePos, setCurrentRangePos] = useState(0);
+  const [stepSize, setStepSize] = useState(7);
   const [type, setType] = useState<"positive" | "death">("positive");
   const [currentDate, setCurrentDate] = useState(null);
   const [geoData, setData] = useState([]);
   const [play, setPlay] = useState(false);
   const { width = 768 } = useWindowSize();
-  
+
   const handleChangeRange = useCallback(
     (evt) => {
-      setCurrentRangePos(evt.target.value);
-      const uniqueDates = groupBy(orderBy([...daily], ["submission_date"], ["asc"]), "submission_date");
+      setCurrentRangePos(parseInt(evt.target.value));
+      const uniqueDates = groupBy(
+        orderBy([...daily], ["submission_date"], ["asc"]),
+        "submission_date"
+      );
       const selectedDate = Object.keys(uniqueDates);
       const d = uniqueDates[selectedDate[parseInt(evt.target.value)]];
       if (selectedDate && d && d[0]) {
@@ -47,8 +51,9 @@ export default function useMap() {
   }, [daily]);
   useInterval(() => {
     if (play) {
-      if (range && currentRangePos < range) {
-        handleChangeRange({ target: { value: currentRangePos + 1 } });
+      console.log(range, currentRangePos, stepSize, range)
+      if (range && currentRangePos + stepSize < range) {
+        handleChangeRange({ target: { value: currentRangePos + stepSize } });
       } else {
         setPlay(false);
       }
@@ -58,16 +63,16 @@ export default function useMap() {
     (selectedDate) => {
       const filtered = [...daily].filter((d) => d?.submission_date === selectedDate);
       const geoData = us_states.features.map((feature) => {
-        const allStateData = groupBy(daily, 'state');
+        const allStateData = groupBy(daily, "state");
         const dataByExactDate = filtered.find((d) => d.state === feature.properties.name);
-        let stateData = null
+        let stateData = null;
         if (allStateData && allStateData[feature.properties.name]) {
           const datesForState = allStateData[feature.properties.name].map(
             (s) => new Date(s?.submission_date)
           );
           const closestDate = closestTo(new Date(selectedDate), datesForState);
           if (closestDate) {
-            stateData = allStateData[feature.properties.name].find(t => {
+            stateData = allStateData[feature.properties.name].find((t) => {
               return isEqual(closestDate, parseISO(t.submission_date));
             });
           }
@@ -86,7 +91,7 @@ export default function useMap() {
   );
   useEffect(() => {
     if (daily) {
-      const firstDate = orderBy(daily, 'submission_date')[0]?.submission_date;
+      const firstDate = orderBy(daily, "submission_date")[0]?.submission_date;
       setCurrentDate(firstDate);
       handleSetDate(firstDate);
     }
@@ -104,5 +109,7 @@ export default function useMap() {
     type,
     data: geoData,
     setType: handleSetType,
+    stepSize,
+    setStepSize,
   };
 }

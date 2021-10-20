@@ -1,42 +1,55 @@
 import { useRef, useEffect } from "react";
-import { select, geoAlbersUsa, geoPath } from "d3";
+import { select, geoAlbersUsa, geoPath, scaleQuantize, scaleThreshold } from "d3";
 import get from "lodash.get";
-import useWindowSize from "hooks/useWindowSize";
+
+const colors = [
+  "lightgray",
+  "#829FD9",
+  "purple",
+  "#FF8F13",
+  "#E86311",
+  "#FF5420",
+  "#1d1c1c",
+  "#FF1343",
+  "#e60e00",
+  "#800800",
+  "#400400",
+  "#000",
+];
+
+var quantizeScale = scaleQuantize()
+  .domain([1, 1000000])
+  //@ts-ignore
+  .range(colors);
 
 export default function useStates({ data, type }) {
   const svgRef = useRef();
   const tooltipRef = useRef();
-  const { width } = useWindowSize();
+  const svg = select(svgRef.current);
+  const tooltip = select(tooltipRef.current);
+  const projection = geoAlbersUsa();
+  const path = geoPath(projection);
   useEffect(() => {
-    const svg = select(svgRef.current);
-    const tooltip = select(tooltipRef.current);
-    const projection = geoAlbersUsa();
-    const path = geoPath(projection);
     tooltip
-      .append("div") 
+      .append("div")
       .style("z-index", "10")
-      
+
       .style("background-color", "#000")
       .style("color", "#fff")
       .style("visibility", "hidden");
     svg.selectAll("path").remove();
 
-    svg
+    let map = svg
       .selectAll("path")
       .data(data)
       .enter()
       .append("path")
+      // .style("fill", "white")
       // @ts-ignore
       .attr("d", path)
-      .style("stroke", "#fff")
+      .style("stroke", "#555")
       .style("stroke-width", "1")
-      .style("fill", (d) => {
-        const positiveCases = parseInt(
-          get(d, type === "death" ? "properties.data.tot_death" : "properties.data.tot_cases", 0),
-          10
-        );
-        return getColor(positiveCases);
-      })
+
       .on("mouseover", function (_event, d) {
         const positiveCases = parseInt(get(d, "properties.data.tot_cases", 0));
         const deaths = parseInt(get(d, "properties.data.tot_death", 0));
@@ -54,6 +67,17 @@ export default function useStates({ data, type }) {
       })
       .on("mouseout", function (event: any, _d) {
         return tooltip.style("visibility", "hidden");
+      });
+    map
+
+      .transition()
+      .duration(75)
+      .attr("fill", (d) => {
+        const positiveCases = parseInt(
+          get(d, type === "death" ? "properties.data.tot_death" : "properties.data.tot_cases", 0),
+          10
+        );
+        return quantizeScale(positiveCases);
       });
   }, [data, type]);
   return {

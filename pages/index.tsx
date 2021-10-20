@@ -17,6 +17,8 @@ export default function IndexPage() {
     currentRangePos,
     type,
     setType,
+    stepSize,
+    setStepSize
   } = useMap();
   return (
     <div className="p-2 md:flex w-full flex-col">
@@ -33,6 +35,8 @@ export default function IndexPage() {
         <StatesViz data={data} type={type} />
         <div className="md:mt-0 md:w-1/3 md:px-8">
           <Legend
+            stepSize={stepSize}
+            setStepSize={setStepSize}
             range={range}
             play={play}
             setPlay={setPlay}

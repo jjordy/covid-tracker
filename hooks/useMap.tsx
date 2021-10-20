@@ -11,7 +11,7 @@ export default function useMap() {
   const { data: daily } = useSWR(`https://data.cdc.gov/resource/9mfq-cb36.json`);
   const [range, setRange] = useState(0);
   const [currentRangePos, setCurrentRangePos] = useState(0);
-  const [stepSize, setStepSize] = useState(7);
+  const [stepSize, setStepSize] = useState(30);
   const [type, setType] = useState<"positive" | "death">("positive");
   const [currentDate, setCurrentDate] = useState(null);
   const [geoData, setData] = useState([]);

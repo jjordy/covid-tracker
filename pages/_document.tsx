@@ -1,15 +1,15 @@
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 export default class extends Document {
   render() {
     return (
-      <html>
+      <Html lang="en">
         <Head />
-        <body className="bg-gray-900">
+        <body className="min-h-screen md:w-screen bg-gradient-to-tl from-gray-500 to-gray-50">
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

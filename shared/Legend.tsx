@@ -14,7 +14,7 @@ export default function Legend({
   setPlay,
   currentDate,
 }) {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const toggle = () => setShow(!show);
   return (
     <>
